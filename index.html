@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Dashboard</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            // Premium Brand Colors (Indigo-Violet Gradient)
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',  // Primary brand
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#1e1b4b',
+            },
+            // Semantic Colors
+            income: {
+              DEFAULT: '#10b981',
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',  // Soft emerald for income
+              500: '#10b981',
+              600: '#059669',
+            },
+            expense: {
+              DEFAULT: '#f43f5e',
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',  // Muted rose for expenses
+              500: '#f43f5e',
+              600: '#e11d48',
+            },
+            warning: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+            },
+            // Dynamic Theme Colors
+            bg: 'var(--bg)',
+            bg2: 'var(--bg2)',
+            bg3: 'var(--bg3)',
+            text: 'var(--text)',
+            text2: 'var(--text2)',
+            text3: 'var(--text3)',
+            border: 'var(--border)',
+            // Chart Palette (Harmonious, Muted)
+            chart: {
+              1: '#6366f1',  // Indigo
+              2: '#8b5cf6',  // Violet
+              3: '#ec4899',  // Pink
+              4: '#f59e0b',  // Amber
+              5: '#14b8a6',  // Teal
+              6: '#3b82f6',  // Blue
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'slide-up-fade': 'slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUpFade: {
+              '0%': { opacity: '0', transform: 'translateY(12px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ============================================
+       PREMIUM COLOR SYSTEM - FINTECH DASHBOARD
+       Inspired by Stripe, Linear, Vercel
+       ============================================ */
+
+    /* Theme Variables */
+    :root {
+      /* 
+       * DARK THEME (Default)
+       * Deep blue-slate base for premium feel
+       */
+      
+      /* Background Layers - Depth System */
+      --bg: #0b0f1a;           /* Deepest background (page) - slate-950 with blue tint */
+      --bg2: #111827;          /* Secondary background (cards) - gray-900 */
+      --bg3: rgba(17, 24, 39, 0.6);  /* Glass background - 60% opacity */
+      
+      /* Text Hierarchy - Readability System */
+      --text: #f9fafb;         /* Primary text - gray-50 (headings, important) */
+      --text2: #d1d5db;        /* Secondary text - gray-300 (labels, descriptions) */
+      --text3: #9ca3af;        /* Muted text - gray-400 (placeholders, hints) */
+      
+      /* Border System - Subtle Depth */
+      --border: rgba(255, 255, 255, 0.08);     /* Default border - 8% white */
+      --border-hover: rgba(255, 255, 255, 0.15); /* Hover border - 15% white */
+      
+      /* Card Background */
+      --card-bg: #111827;      /* Matches bg2 */
+      
+      /* Shadow System - Layered Depth */
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);  /* Brand glow */
+      
+      /* Semantic Colors - Dark Theme Optimized */
+      --income: #34d399;       /* Emerald 400 - soft, not neon */
+      --income-bg: rgba(52, 211, 153, 0.1);
+      --expense: #fb7185;      /* Rose 400 - muted, not harsh */
+      --expense-bg: rgba(251, 113, 133, 0.1);
+      --warning: #fbbf24;      /* Amber 400 */
+    }
+
+    body.light {
+      /* 
+       * LIGHT THEME
+       * Clean, professional white base
+       */
+      
+      /* Background Layers */
+      --bg: #f8fafc;           /* Slate 50 - clean white with slight blue */
+      --bg2: #ffffff;          /* Pure white for cards */
+      --bg3: rgba(255, 255, 255, 0.7);  /* Glass - 70% white */
+      
+      /* Text Hierarchy */
+      --text: #111827;         /* Gray 900 - deep, readable */
+      --text2: #4b5563;        /* Gray 600 - secondary */
+      --text3: #9ca3af;        /* Gray 400 - muted */
+      
+      /* Border System */
+      --border: rgba(0, 0, 0, 0.08);     /* 8% black - subtle */
+      --border-hover: rgba(0, 0, 0, 0.15); /* 15% black - hover */
+      
+      /* Card Background */
+      --card-bg: #ffffff;
+      
+      /* Shadow System - Lighter for light theme */
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.1);
+      
+      /* Semantic Colors - Light Theme */
+      --income: #059669;       /* Emerald 600 - deeper for contrast */
+      --income-bg: rgba(5, 150, 105, 0.1);
+      --expense: #e11d48;      /* Rose 600 - deeper for contrast */
+      --expense-bg: rgba(225, 29, 72, 0.1);
+      --warning: #f59e0b;      /* Amber 500 */
+    }
+
+    body { font-family: 'Inter', sans-serif; }
+    
+    /* Premium Glassmorphism Classes */
+    .glass {
+      background: var(--bg3);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    
+    /* Scrollbar Styling - Premium */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { 
+      background: var(--text3); 
+      border-radius: 4px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    ::-webkit-scrollbar-thumb:hover { 
+      background: var(--text2);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    /* Premium Transitions */
+    .nav-btn { 
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    
+    .nav-btn:hover { 
+      background: rgba(99, 102, 241, 0.08); 
+      color: #818cf8;
+      transform: translateX(2px);
+    }
+    
+    .nav-btn.active {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, transparent 100%);
+      color: #6366f1;
+      font-weight: 600;
+    }
+
+    .nav-btn.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+      border-radius: 0 2px 2px 0;
+    }
+    
+    .nav-btn:active {
+      transform: scale(0.98) translateX(2px);
+    }
+
+    /* Staggered Animation Delays */
+    .stagger-1 { animation-delay: 0ms; }
+    .stagger-2 { animation-delay: 50ms; }
+    .stagger-3 { animation-delay: 100ms; }
+    .stagger-4 { animation-delay: 150ms; }
+    .stagger-5 { animation-delay: 200ms; }
+    .stagger-6 { animation-delay: 250ms; }
+
+    /* Premium Button Effects */
+    .btn-premium {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .btn-premium:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    
+    .btn-premium:active {
+      transform: scale(0.95) translateY(0);
+    }
+
+    /* Card Hover Elevation */
+    .card-elevated {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-elevated:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    /* Chip Selection Animation */
+    .chip-interactive {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .chip-interactive:hover {
+      transform: scale(1.05);
+    }
+    
+    .chip-interactive:active {
+      transform: scale(0.95);
+    }
+
+    /* Table Row Premium Hover */
+    .table-row-premium {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .table-row-premium:hover {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+    }
+
+    /* Chart Card Glow */
+    .chart-card-glow:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Custom Dropdown Styling for Dark Theme */
+    select option {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 8px;
+    }
+
+    select option:hover {
+      background: #334155;
+    }
+
+    select option:checked {
+      background: linear-gradient(0deg, rgba(99, 102, 241, 0.3) 0%, rgba(99, 102, 241, 0.3) 100%);
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="bg-bg text-text transition-colors duration-200 min-h-screen flex overflow-hidden">
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity duration-300 opacity-0 cursor-pointer"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 w-64 flex-shrink-0 border-r border-border bg-bg2 flex flex-col transition-transform duration-300 z-40">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-6 border-b border-border">
+      <div class="w-8 h-8 rounded bg-brand-500 flex items-center justify-center text-white font-bold text-xl mr-3 shadow-lg shadow-brand-500/30">
+        <i class="fa-solid fa-chart-pie"></i>
+      </div>
+      <h1 class="text-xl font-bold tracking-tight text-text">FinDash</h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 py-6 flex flex-col gap-2">
+      <button onclick="window.app.navigate('overview')" id="nav-overview" class="nav-btn active flex items-center px-6 py-3 w-full text-left text-text2 font-medium">
+        <i class="fa-solid fa-house w-6 text-center mr-2"></i> Overview
+      </button>
+      <button onclick="window.app.navigate('transactions')" id="nav-transactions" class="nav-btn flex items-center px-6 py-3 w-full text-left text-text2 font-medium">
+        <i class="fa-solid fa-list-ul w-6 text-center mr-2"></i> Transactions
+      </button>
+      <button onclick="window.app.navigate('insights')" id="nav-insights" class="nav-btn flex items-center px-6 py-3 w-full text-left text-text2 font-medium">
+        <i class="fa-solid fa-lightbulb w-6 text-center mr-2"></i> Insights
+      </button>
+    </nav>
+
+  </aside>
+
+  <!-- Main Wrapper -->
+  <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    
+    <!-- Topbar -->
+    <header class="h-16 flex-shrink-0 border-b border-border bg-bg2/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-8 z-20 transition-colors duration-200">
+      <div class="flex items-center gap-3">
+        <button id="mobile-menu-btn" class="md:hidden p-2 -ml-2 text-text2 hover:text-text transition-colors focus:outline-none">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <h2 id="page-title" class="text-xl sm:text-2xl font-bold tracking-tight text-text truncate max-w-[150px] sm:max-w-none">Overview</h2>
+      </div>
+      
+      <div class="flex items-center gap-2 sm:gap-4 flex-wrap justify-end">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-border text-text2 transition-all duration-200 text-lg relative cursor-pointer active:scale-90">
+          <i id="theme-icon" class="fa-solid fa-sun"></i>
+        </button>
+        
+
+        <!-- Role Switcher (Animated Pill Toggle) -->
+        <div class="hidden sm:flex relative items-center bg-bg p-1 rounded-lg border border-border" title="Switch Role">
+          <!-- Sliding Background Pill -->
+          <div id="role-slider" class="absolute top-1 bottom-1 left-1 w-[72px] rounded-md transition-all duration-300 ease-in-out shadow-sm bg-brand-500 z-0 transform"></div>
+          
+          <button id="role-admin-btn" onclick="window.app.setRole('admin')" class="relative z-10 px-0 py-1.5 w-[72px] text-xs font-semibold transition-colors duration-200 cursor-pointer text-center text-white active:scale-95">Admin</button>
+          <button id="role-viewer-btn" onclick="window.app.setRole('viewer')" class="relative z-10 px-0 py-1.5 w-[72px] text-xs font-semibold transition-colors duration-200 cursor-pointer text-center text-text3 hover:text-text active:scale-95">Viewer</button>
+        </div>
+
+        <!-- User Avatar & Badge -->
+        <div class="flex items-center gap-2 ml-2 group">
+          <span id="role-badge" class="hidden md:inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest bg-brand-500/10 text-brand-500 border border-brand-500/20 transition-all">Admin</span>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-500 to-purple-500 p-0.5 shadow-sm flex items-center justify-center cursor-pointer transform group-hover:scale-105 transition-transform" title="Profile">
+            <div class="w-full h-full rounded-full bg-bg flex items-center justify-center border-2 border-bg transition-colors">
+              <span id="avatar-initials" class="text-xs font-bold text-text">AD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Area -->
+    <main id="app-content" class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 relative">
+      <!-- Content injected by JS -->
+    </main>
+
+  </div>
+
+  <!-- Modal for CRUD (Hidden by default) -->
+  <div id="transaction-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-bg2 w-full max-w-md rounded-2xl shadow-2xl border border-border transform transition-all duration-300 ease-out scale-95 translate-y-4 opacity-0" id="modal-content">
+      <div class="p-6 border-b border-border flex justify-between items-center">
+        <h3 class="text-lg font-bold text-text" id="modal-title">Add Transaction</h3>
+        <button id="close-modal" class="text-text3 hover:text-text transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="transaction-form" class="space-y-4">
+          <input type="hidden" id="txn-id" value="">
+          
+          <div>
+            <label class="block text-sm font-medium text-text2 mb-1">Description</label>
+            <input type="text" id="txn-desc" required class="w-full bg-bg border border-border text-text rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 outline-none transition" placeholder="e.g. Grocery Shopping">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-text2 mb-1">Amount ($)</label>
+              <input type="number" step="0.01" id="txn-amount" required class="w-full bg-bg border border-border text-text rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 outline-none transition" placeholder="0.00">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-text2 mb-1">Date</label>
+              <input type="date" id="txn-date" required class="w-full bg-bg border border-border text-text rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 outline-none transition">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-text2 mb-1">Type</label>
+              <select id="txn-type" class="w-full bg-bg border border-border text-text rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 outline-none transition cursor-pointer">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-text2 mb-1">Category</label>
+              <select id="txn-category" class="w-full bg-bg border border-border text-text rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 outline-none transition cursor-pointer">
+                <option value="Housing">Housing</option>
+                <option value="Food">Food</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Salary">Salary</option>
+                <option value="Investments">Investments</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end gap-3">
+            <button type="button" id="cancel-modal" class="px-5 py-2 text-sm font-medium text-text bg-bg border border-border hover:bg-border rounded-lg transition-all duration-200 cursor-pointer active:scale-95">Cancel</button>
+            <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-500 rounded-lg transition-all duration-200 shadow-lg shadow-brand-500/30 cursor-pointer active:scale-95">Save Transaction</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-50"></div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
