@@ -616,7 +616,7 @@ function renderTransactions() {
     <div class="animate-slide-up-fade max-w-7xl mx-auto flex flex-col h-full bg-bg2 rounded-2xl shadow-lg shadow-black/20 border border-border overflow-hidden transition-colors">
       
       <!-- Toolbar -->
-      <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-border bg-gradient-to-b from-white/5 to-transparent">
+      <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-border bg-gradient-to-b from-gray-50/50 dark:from-white/5 to-transparent">
         
         <!-- Filters Container -->
         <div class="flex flex-col gap-4">
@@ -634,7 +634,7 @@ function renderTransactions() {
                 id="search-input" 
                 value="${appState.filters.search}" 
                 placeholder="Search transactions..." 
-                class="w-full pl-11 pr-4 py-2.5 bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl text-text text-sm placeholder:text-text3/60 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 transition-all duration-200"
+                class="w-full pl-11 pr-4 py-2.5 bg-white dark:bg-slate-800/60 border border-gray-200 dark:border-white/10 rounded-xl text-gray-800 dark:text-text text-sm placeholder-gray-400 dark:placeholder:text-text3/60 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 transition-all duration-200"
               >
             </div>
             
@@ -642,10 +642,10 @@ function renderTransactions() {
             <div class="flex gap-2 items-center flex-shrink-0">
               <!-- Type Filter -->
               <div class="relative">
-                <select id="filter-type" class="appearance-none w-full pl-3.5 pr-9 py-2.5 bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl text-text text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 hover:border-brand-500/40 hover:bg-slate-800/80 transition-all duration-200">
-                  <option value="all" class="bg-slate-800 text-text">All Types</option>
-                  <option value="income" class="bg-slate-800 text-text">Income</option>
-                  <option value="expense" class="bg-slate-800 text-text">Expense</option>
+                <select id="filter-type" class="appearance-none w-full pl-3.5 pr-9 py-2.5 bg-white dark:bg-slate-800/60 border border-gray-200 dark:border-white/10 rounded-xl text-gray-800 dark:text-text text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 hover:border-brand-500/40 hover:bg-gray-50 dark:hover:bg-slate-800/80 transition-all duration-200">
+                  <option value="all" class="bg-white dark:bg-slate-800 text-gray-800 dark:text-text">All Types</option>
+                  <option value="income" class="bg-white dark:bg-slate-800 text-gray-800 dark:text-text">Income</option>
+                  <option value="expense" class="bg-white dark:bg-slate-800 text-gray-800 dark:text-text">Expense</option>
                 </select>
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                   <i class="fa-solid fa-chevron-down text-text3/60 text-xs"></i>
@@ -654,9 +654,9 @@ function renderTransactions() {
 
               <!-- Month Filter -->
               <div class="relative">
-                <select id="filter-month" class="appearance-none w-full pl-3.5 pr-9 py-2.5 bg-slate-800/60 backdrop-blur-md border border-white/10 rounded-xl text-text text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 hover:border-brand-500/40 hover:bg-slate-800/80 transition-all duration-200">
-                  <option value="all" class="bg-slate-800 text-text">All Months</option>
-                  ${getUniqueMonths().map(m => `<option value="${m}" class="bg-slate-800 text-text">${m}</option>`).join('')}
+                <select id="filter-month" class="appearance-none w-full pl-3.5 pr-9 py-2.5 bg-white dark:bg-slate-800/60 border border-gray-200 dark:border-white/10 rounded-xl text-gray-800 dark:text-text text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/60 hover:border-brand-500/40 hover:bg-gray-50 dark:hover:bg-slate-800/80 transition-all duration-200">
+                  <option value="all" class="bg-white dark:bg-slate-800 text-gray-800 dark:text-text">All Months</option>
+                  ${getUniqueMonths().map(m => `<option value="${m}" class="bg-white dark:bg-slate-800 text-gray-800 dark:text-text">${m}</option>`).join('')}
                 </select>
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                   <i class="fa-solid fa-chevron-down text-text3/60 text-xs"></i>
@@ -679,7 +679,7 @@ function renderTransactions() {
               <button 
                 id="export-csv-btn" 
                 onclick="window.app.exportCSV()" 
-                class="btn-premium px-4 py-2.5 bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-brand-500/40 text-text text-sm font-medium rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-sm"
+                class="btn-premium px-4 py-2.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-brand-500/40 text-gray-700 dark:text-text text-sm font-medium rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-sm"
               >
                 <i class="fa-solid fa-arrow-down-to-line text-xs"></i> 
                 <span class="hidden sm:inline">Export</span>
@@ -707,7 +707,7 @@ function renderTransactions() {
                   class="chip-interactive flex-shrink-0 px-4 py-2 rounded-full text-xs font-semibold border transition-all duration-200 cursor-pointer ${
                     isActive 
                       ? 'bg-gradient-to-r from-brand-500 to-purple-500 border-transparent text-white shadow-md shadow-brand-500/30' 
-                      : 'bg-white/5 border-white/10 text-text3 hover:border-brand-500/50 hover:text-brand-400 hover:bg-brand-500/10'
+                      : 'bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-700 dark:text-text3 hover:border-brand-500/50 hover:text-brand-400 hover:bg-brand-500/10'
                   }"
                 >
                   ${c}
@@ -725,10 +725,10 @@ function renderTransactions() {
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="bg-bg/50 text-xs uppercase tracking-wider text-text3 border-b border-border">
-              <th class="px-6 py-4 cursor-pointer hover:text-text hover:bg-white/5 transition-all duration-200" onclick="window.app.toggleSort('date')">Date <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+              <th class="px-6 py-4 cursor-pointer hover:text-text hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200" onclick="window.app.toggleSort('date')">Date <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
               <th class="px-6 py-4">Description</th>
               <th class="px-6 py-4">Category</th>
-              <th class="px-6 py-4 text-right cursor-pointer hover:text-text hover:bg-white/5 transition-all duration-200" onclick="window.app.toggleSort('amount')">Amount <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
+              <th class="px-6 py-4 text-right cursor-pointer hover:text-text hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200" onclick="window.app.toggleSort('amount')">Amount <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>
               ${appState.role === 'admin' ? '<th class="px-6 py-4 text-right">Actions</th>' : ''}
             </tr>
           </thead>
@@ -739,7 +739,7 @@ function renderTransactions() {
       </div>
 
       <!-- Pagination -->
-      <div id="pagination-container" class="p-4 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm bg-gradient-to-t from-white/5 to-transparent transition-all duration-300">
+      <div id="pagination-container" class="p-4 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm bg-gradient-to-t from-gray-50/50 dark:from-white/5 to-transparent transition-all duration-300">
         <!-- Injected by renderPagination -->
       </div>
     </div>
