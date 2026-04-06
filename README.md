@@ -85,7 +85,7 @@ This is a **fully-featured finance dashboard** that transforms raw transaction d
 
 **Using Python:**
 ```bash
-cd "LINKDIN ONES FINAL/LINKDIN ONES"
+cd "FINANCIAL DASHBOARD"
 python -m http.server 8080
 # Visit: http://localhost:8080
 ```
@@ -121,15 +121,12 @@ npx http-server -p 8080
 ## 📁 Project Structure
 
 ```
-LINKDIN ONES/
+FINANCIAL DASHBOARD/
 ├── index.html           # Main HTML file, Tailwind config, CSS variables
 ├── data.js             # Mock data, LocalStorage utilities
 ├── script.js           # App logic, rendering, charts, interactions
 ├── README.md           # This file
-├── COLOR_SYSTEM_GUIDE.md    # Color system documentation
-├── UI_ENHANCEMENTS_GUIDE.md # Micro-interactions guide
-├── QUICK_REFERENCE.md       # CSS classes quick lookup
-└── INSIGHTS_FEATURES.md     # Analytics features docs
+
 ```
 
 ---
@@ -400,16 +397,6 @@ In `index.html`, update CSS variables:
 
 ---
 
-## 📚 Documentation
-
-| Document | Description |
-|----------|-------------|
-| [COLOR_SYSTEM_GUIDE.md](COLOR_SYSTEM_GUIDE.md) | Complete color system design |
-| [UI_ENHANCEMENTS_GUIDE.md](UI_ENHANCEMENTS_GUIDE.md) | Micro-interactions & animations |
-| [QUICK_REFERENCE.md](QUICK_REFERENCE.md) | CSS classes quick lookup |
-| [INSIGHTS_FEATURES.md](INSIGHTS_FEATURES.md) | Analytics features explained |
-
----
 
 ## 🎓 Learning Outcomes
 
